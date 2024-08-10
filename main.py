@@ -1,4 +1,8 @@
+from app import App
+
 def main():
-    #ejecucion principal
-    print("h")
+    app = App()
+    app.run()
+
+main()
 
