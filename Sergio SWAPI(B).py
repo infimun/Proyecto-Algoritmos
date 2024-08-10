@@ -66,6 +66,6 @@ for especie in especies:
     los_episodios = especie['episodios']
     print(" ")
     print(f"Episodios:")
-    for elementos in los_episodios
+    for elementos in los_episodios:
         print(f"     -{elementos}")
     print("-------------------------------------\n")
