@@ -5,6 +5,7 @@ import os
 
 def menu_principal():
     while True:
+        limpiarp.limpiar_pantalla()
         print("\nMenú Principal:")
         print("1. Lista de peliculas de la Saga")
         print("2. Lista de las especiede seres vivos de la Saga")
