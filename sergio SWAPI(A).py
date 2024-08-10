@@ -19,9 +19,10 @@ for film in las_peliculas['results']:
 
 print("-------------------------------------")
 for pelicula in peliculas:
-    print(f"Título: {pelicula['titulo']} \n")
-    print(f"Número de Episodio: {pelicula['numero_de_episodio']} \n")
+    print(f"Título              : {pelicula['titulo']} \n")
+    print(f"Número de Episodio  : {pelicula['numero_de_episodio']} \n")
     print(f"Fecha de Lanzamiento: {pelicula['fecha_de_lanzamiento']} \n")
-    print(f"Director: {pelicula['director']} \n")
-    print(f"Opening Crawl: {pelicula['opening_crawl']} \n")
+    print(f"Director            : {pelicula['director']} \n")
+    print("Opening Crawl       : \n")
+    print(f"{pelicula['opening_crawl']} \n")
     print("-------------------------------------\n")
