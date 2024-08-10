@@ -6,12 +6,12 @@ import os
 def menu_principal():
     while True:
         limpiarp.limpiar_pantalla()
-        print("\nMenú Principal:")
+        print("\nMenú Principal:\n")
         print("1. Lista de peliculas de la Saga")
         print("2. Lista de las especiede seres vivos de la Saga")
         print("3. Lista de Planetas")
         print("4. Buscar personajes")
-        print("0. Salir")
+        print("0. Salir\n")
 
         seleccion = input("Elige una opción (1-5, o 0 para salir): ")
 
