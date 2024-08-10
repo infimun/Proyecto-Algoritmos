@@ -1,6 +1,7 @@
 import requests 
 import os 
 
+
 def initial_films():
     peliculas=requests.get("https://swapi.dev/api/films")
     return peliculas.json ()
@@ -25,5 +26,5 @@ for pelicula in peliculas:
     print(f"Director: {pelicula['director']} \n")
     print(f"Opening Crawl: {pelicula['opening_crawl']} \n")
     print("-------------------------------------\n")
-
-opcion = input("Presione una tecla para continuar: ")
+print("Presione cualquier tecla para continuar...")
+msvcrt.getch()
