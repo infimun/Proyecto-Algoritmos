@@ -7,13 +7,13 @@ def menu_principal():
     while True:
         limpiarp.limpiar_pantalla()
         print("\nMenú Principal:\n")
-        print("1. Lista de peliculas de la Saga")
-        print("2. Lista de las especiede seres vivos de la Saga")
+        print("1. Lista de películas de la Saga")
+        print("2. Lista de las especie de seres vivos de la Saga")
         print("3. Lista de Planetas")
-        print("4. Buscar personajes")
+        print("4. Buscar Personajes")
         print("0. Salir\n")
 
-        seleccion = input("Elige una opción (1-5, o 0 para salir): ")
+        seleccion = input("Elige una opción (1-4, o 0 para salir): ")
 
         if seleccion == '1':
             limpiarp.limpiar_pantalla()
