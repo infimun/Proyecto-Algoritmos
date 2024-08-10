@@ -1,4 +1,5 @@
 import requests
+import limpiarp
 
 def obtener_especies():
     url = "https://swapi.dev/api/species/"
@@ -52,20 +53,27 @@ def obtener_nombres_episodios(urls):
 
 
 especies = obtener_especies()
+limpiarp.limpiar_pantalla()
 print("-------------------------------------")
 for especie in especies:
-    print(f"Nombre: {especie['nombre']} \n")
-    print(f"Altura Promedio: {especie['altura_promedio']} \n")
-    print(f"Clasificación: {especie['clasificacion']} \n")
-    print(f"Planeta de Origen: {especie['planeta_origen']} \n")
-    print(f"Lengua Materna: {especie['lengua_materna']} \n")
+    print(f"Nombre            : {especie['nombre']} \n")
+    print(f"Altura Promedio   : {especie['altura_promedio']} \n")
+    print(f"Clasificación     : {especie['clasificacion']} \n")
+    print(f"Planeta de Origen : {especie['planeta_origen']} \n")
+    print(f"Lengua Materna    : {especie['lengua_materna']} \n")
     los_personajes = especie['personajes']
-    print(f"Personajes:")
-    for elementos in los_personajes:
-        print(f"     -{elementos}")
+    print(f"Personajes        :")
+    if len(los_personajes) == 0:
+        print("   -!!! NO HAY PERSONAJES !!!")
+    else:
+      for elementos in los_personajes:
+          print(f"     -{elementos}")
     los_episodios = especie['episodios']
     print(" ")
-    print(f"Episodios:")
-    for elementos in los_episodios:
-        print(f"     -{elementos}")
+    print(f"Episodios         :")
+    if len(los_episodios) == 0:
+        print("   -!!! NO TIENE EPISODIOSS !!!")
+    else:
+       for elementos in los_episodios:
+           print(f"     -{elementos}")
     print("-------------------------------------\n")

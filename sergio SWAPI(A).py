@@ -1,5 +1,5 @@
 import requests 
-import os 
+import limpiarp
 
 def initial_films():
     peliculas=requests.get("https://swapi.dev/api/films")
@@ -16,7 +16,7 @@ for film in las_peliculas['results']:
                 "director": film['director']}
     peliculas.append(pelicula)
 
-
+limpiarp.limpiar_pantalla()
 print("-------------------------------------")
 for pelicula in peliculas:
     print(f"Título              : {pelicula['titulo']} \n")

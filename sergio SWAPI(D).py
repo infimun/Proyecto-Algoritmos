@@ -1,5 +1,5 @@
 import requests
-import os
+import limpiarp
 
 def buscar_personaje(nombre_parcial):
     url = "https://swapi.dev/api/people/"
@@ -69,14 +69,40 @@ def obtener_nombres_vehiculos(urls):
         nombres.append(data['name'])
     return nombres
 
+limpiarp.limpiar_pantalla()
 nombre_parcial = input("Introduce parte del nombre del personaje: ")
+print(" ")
+print(f"Por favor esperar, buscando todos los Nombres con: {nombre_parcial}")
 personajes = buscar_personaje(nombre_parcial)
+limpiarp.limpiar_pantalla()
+print("-"*40)
 for personaje in personajes:
-    print(f"Nombre: {personaje['nombre']}")
-    print(f"Planeta de Origen: {personaje['planeta_origen']}")
-    print(f"Episodios: {', '.join(personaje['episodios'])}")
-    print(f"Género: {personaje['genero']}")
-    print(f"Especie: {personaje['especie']}")
-    print(f"Naves: {', '.join(personaje['naves'])}")
-    print(f"Vehículos: {', '.join(personaje['vehiculos'])}")
-    print("\n")
+    print(f"Nombre            : {personaje['nombre']} \n")
+    print(f"Planeta de Origen : {personaje['planeta_origen']} \n")
+    print(f"Género            : {personaje['genero']} \n")
+    print(f"Especie           : {personaje['especie']} \n")
+    los_episodios=personaje['episodios']
+    print(f"Episodios         :")
+    if len(los_episodios) == 0:
+        print("   -!!! NO TIENE EPISODIOSS !!!")
+    else:
+        for elementos in los_episodios:
+            print(f"  -{elementos}")
+    print(" ")
+    las_naves=personaje['naves']
+    print(f"Naves             :")
+    if len(las_naves) == 0:
+        print("   -!!! NO TIENE NAVES !!!")
+    else:
+        for elementos in las_naves:
+           print(f"  -{elementos}")
+    print(" ")
+    los_vehiculos=personaje['vehiculos']
+    print(f"Vehículos         :")
+    if len(los_vehiculos) == 0:
+        print("   -!!! NO TIENE VEHICULOS !!!")
+    else:
+       for elementos in los_vehiculos:
+           print(f"  -{elementos}")
+    print("-"*40)
+    print(" ")
