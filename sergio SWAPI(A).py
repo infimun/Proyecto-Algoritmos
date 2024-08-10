@@ -25,4 +25,5 @@ for pelicula in peliculas:
     print(f"Director: {pelicula['director']} \n")
     print(f"Opening Crawl: {pelicula['opening_crawl']} \n")
     print("-------------------------------------\n")
-opcion = input("Presione una tecla para continuar")
+
+opcion = input("Presione una tecla para continuar: ")
