@@ -84,7 +84,7 @@ for personaje in personajes:
     los_episodios=personaje['episodios']
     print(f"Episodios         :")
     if len(los_episodios) == 0:
-        print("   -!!! NO TIENE EPISODIOSS !!!")
+        print("   -¡¡¡ NO TIENE EPISODIOSS !!!")
     else:
         for elementos in los_episodios:
             print(f"  -{elementos}")
@@ -92,7 +92,7 @@ for personaje in personajes:
     las_naves=personaje['naves']
     print(f"Naves             :")
     if len(las_naves) == 0:
-        print("   -!!! NO TIENE NAVES !!!")
+        print("   -¡¡¡ NO TIENE NAVES !!!")
     else:
         for elementos in las_naves:
            print(f"  -{elementos}")
@@ -100,7 +100,7 @@ for personaje in personajes:
     los_vehiculos=personaje['vehiculos']
     print(f"Vehículos         :")
     if len(los_vehiculos) == 0:
-        print("   -!!! NO TIENE VEHICULOS !!!")
+        print("   -¡¡¡ NO TIENE VEHICULOS !!!")
     else:
        for elementos in los_vehiculos:
            print(f"  -{elementos}")
