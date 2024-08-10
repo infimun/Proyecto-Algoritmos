@@ -50,7 +50,7 @@ def obtener_nombres_episodios(urls):
         nombres.append(data['title'])
     return nombres
 
-# Ejemplo de uso
+
 especies = obtener_especies()
 print("-------------------------------------")
 for especie in especies:
