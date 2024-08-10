@@ -64,7 +64,7 @@ for especie in especies:
     los_personajes = especie['personajes']
     print(f"Personajes        :")
     if len(los_personajes) == 0:
-        print("   -!!! NO HAY PERSONAJES !!!")
+        print("   -¡¡¡ NO HAY PERSONAJES !!!")
     else:
       for elementos in los_personajes:
           print(f"     -{elementos}")
@@ -72,7 +72,7 @@ for especie in especies:
     print(" ")
     print(f"Episodios         :")
     if len(los_episodios) == 0:
-        print("   -!!! NO TIENE EPISODIOSS !!!")
+        print("   -¡¡¡ NO TIENE EPISODIOSS !!!")
     else:
        for elementos in los_episodios:
            print(f"     -{elementos}")
