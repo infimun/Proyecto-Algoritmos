@@ -16,5 +16,5 @@ def listar_peliculas():
         print(f'Introducción: {movie.opening_crawl}')
         print('-'*70)
 
-        listar_peliculas()
+       
             
