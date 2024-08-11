@@ -1,8 +1,4 @@
-import requests
-from swapi_client import SWAPIClient
-from models.movie import Movie
-from models.species import Species
-from models.planet import Planet
+from center import listar_peliculas
 
 def main():
     listar_peliculas()
