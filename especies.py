@@ -28,4 +28,8 @@ class Species:
             homeworld_url=data['properties']['homeworld'],
             language=data['properties']['language']
         )
+<<<<<<< HEAD
         return species
+=======
+        return species
+>>>>>>> 9663ed376413ad22da1023fdd523cfd60e597e82

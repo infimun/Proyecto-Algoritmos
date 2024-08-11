@@ -45,4 +45,11 @@ class Planeta:
 
     
     def mostrar(self):
-        print(f"{self.nombre}, {self.episodios}")
+        print(f"""
+{self.nombre} 
+Aparece en:{self.episodios}
+Rotacion:{self.rotacion}
+Habitantes:{self.habitantes}
+Clima:{self.clima}
+Personajes originarios: {self.personajes}
+""")
