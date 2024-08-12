@@ -222,3 +222,58 @@ def listar_planetas():
                 print("Entrada no valida. Por favor, introduzca un numero o 'q' para salir") 
 
 
+"""selector de personajes para el main 
+busque coincidencias con escrito
+"""
+
+def buscar_personaje():
+    all_characters = []
+    page = 1
+
+    #personajes mediante api
+    while True:
+        characters_response = requests.get(f"https://www.swapi.tech/api/people?page={page}&limit=10")
+        if characters_response.status_code == 200:
+            response_data = characters_response.json()
+            characters_data = response_data["results"]
+            all_characters.extend(characters_data)
+            if response_data["next"] is None:
+                break
+            page += 1
+        else:
+            print("Error al obtener personajes.")
+            return
+    
+    while True:
+        search_term = input("\nIntroduce el nombre del personaje (o parte del nombre) a buscar (o 'q' para volver al menú principal): ").strip()
+        if search_term.lower() == "q":
+            break
+        
+        matching_characters= []
+        #busqueda de coincidencia
+
+        for character in all_characters:
+            if search_term.lower() in character["name"].lower():
+                matching_characters.append(character)
+        
+        if matching_characters:
+            if len(matching_characters) == 1:
+                # Si solo hay una coincidencia, mostrar la información directamente
+                character_url = matching_characters[0]["url"]
+                response = requests.get(character_url)
+                if response.status_code == 200:
+                    character_details = response.json()["result"]["properties"]
+
+                    # Obtener el nombre del planeta natal
+                    homeworld_url = character_details.get('homeworld')
+                    if homeworld_url:
+                        planet_response = requests.get(homeworld_url)
+                        if planet_response.status_code == 200:
+                            homeworld_name = planet_response.json()["result"]["properties"]["name"]
+                        else:
+                            homeworld_name = "Desconocido"
+                    else:
+                        homeworld_name = "N/A"
+
+                        #detalles personaje
+                        
