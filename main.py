@@ -1,6 +1,7 @@
 from center import listar_peliculas
+from center import seleccionar_especie
 
 def main():
-    listar_peliculas()
+    seleccionar_especie()
 
 main()

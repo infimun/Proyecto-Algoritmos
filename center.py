@@ -4,7 +4,7 @@ from models.movie import Movie
 from models.species import Species
 from models.planet import Planet
 
-
+#mostrar peliculas para el main
 def listar_peliculas():
     movies_data = SWAPIClient.get_movies()
     movies = [Movie.from_dict(movie) for movie in movies_data]
@@ -16,5 +16,126 @@ def listar_peliculas():
         print(f'Introducción: {movie.opening_crawl}')
         print('-'*70)
 
-       
-            
+"""
+selector de especies para el main
+recorrer paginas de la api para ver todos las especies 
+"""
+def seleccionar_especie():
+    current_page = 1
+    species_data = []
+    total_records = 0
+    species_per_page = 10
+    
+    while True:
+        if not species_data:
+            response = requests.get(f"https://www.swapi.tech/api/species?page={current_page}&limit={species_per_page}")
+            if response.status_code == 200:
+                response_data = response.json()
+                species_data = response_data['results']
+                total_records = response_data['total_records']
+                total_pages = response_data['total_pages']
+            else:
+                print('Error al obtener los datos de especies')
+                break
+
+        start_index = (current_page - 1) * species_per_page + 1
+
+        print("\nEspecies disponibles:")
+        for index, species in enumerate(species_data, start=start_index):
+            print(f"{index}. {species['name']}")
+
+                # Opciones de navegación
+        options = "\nSelecciona una especie por número"
+        if current_page > 1:
+            options += " o escribe 'prev' para ver opciones anteriores"
+        if current_page < total_pages:
+            options += " o 'next' para ver más opciones"
+        options += " (o 'q' para volver al menú principal): "
+
+        choice = input(options)
+
+        if choice.lower() == 'q':
+            break
+        elif choice.lower() == 'next' and current_page < total_pages:
+            current_page += 1
+            species_data = []
+        elif choice.lower() == 'prev' and current_page > 1:
+            current_page -= 1
+            species_data = []
+        else:
+            try:
+                choice = int(choice) - start_index
+                if 0 <= choice < len(species_data):
+                    species_url = species_data[choice]["url"]
+                    response = requests.get(species_url)
+                    if response.status_code == 200:
+                        species_details = response.json()["result"]["properties"]
+
+                        # Obtener el nombre del planeta natal
+                        homeworld_url = species_details.get('homeworld')
+                        if homeworld_url:
+                            planet_response = requests.get(homeworld_url)
+                            if planet_response.status_code == 200:
+                                homeworld_name = planet_response.json()["result"]["properties"]["name"]
+                            else:
+                                homeworld_name = "Desconocido"
+                        else:
+                            homeworld_name = "N/A"
+
+                        # Mostrar detalles de la especie
+                        def traducir_valor(valor):
+                            if valor == "unknown":
+                                return "desconocido"
+                            if valor == "N/A":
+                                return "no aplica"
+                            return valor
+                        
+                        print(f"\nDetalles para {species_details.get('name', 'N/A')}:")
+                        print(f"Clasificación: {traducir_valor(species_details.get('classification', 'N/A'))}")
+                        print(f"Designación: {traducir_valor(species_details.get('designation', 'N/A'))}")
+                        print(f"Altura Promedio: {traducir_valor(species_details.get('average_height', 'N/A'))} cm")
+                        print(f"Esperanza de Vida Promedio: {traducir_valor(species_details.get('average_lifespan', 'N/A'))} años")
+                        print(f"Colores de Cabello: {traducir_valor(species_details.get('hair_colors', 'N/A'))}")
+                        print(f"Colores de Piel: {traducir_valor(species_details.get('skin_colors', 'N/A'))}")
+                        print(f"Colores de Ojos: {traducir_valor(species_details.get('eye_colors', 'N/A'))}")
+                        print(f"Mundo Natal: {homeworld_name}")
+                        print(f"Idioma: {traducir_valor(species_details.get('language', 'N/A'))}")
+
+                        # Obtener y mostrar detalles de los personajes
+                        characters = species_details.get('people', [])
+                        if characters:
+                            print("\nPersonajes:")
+                            for character_url in characters:
+                                character_response = requests.get(character_url)
+                                if character_response.status_code == 200:
+                                    character_details = character_response.json()["result"]["properties"]
+                                    
+                                    # Obtener el nombre del planeta de origen del personaje
+                                    homeworld_url = character_details.get('homeworld')
+                                    if homeworld_url:
+                                        planet_response = requests.get(homeworld_url)
+                                        if planet_response.status_code == 200:
+                                            character_homeworld_name = planet_response.json()["result"]["properties"]["name"]
+                                        else:
+                                            character_homeworld_name = "Desconocido"
+                                    else:
+                                        character_homeworld_name = "N/A"
+                                    
+                                    # Mostrar detalles del personaje
+                                    print(f" - Nombre: {traducir_valor(character_details.get('name', 'N/A'))}")
+                                    print(f"   Altura: {traducir_valor(character_details.get('height', 'N/A'))} cm")
+                                    print(f"   Mundo Natal: {character_homeworld_name}")
+                                    print(f"   Idioma: {traducir_valor(species_details.get('language', 'N/A'))}\n")
+                                else:
+                                    print(" - Error al obtener detalles del personaje.")
+                            print()  # Agregar una línea en blanco después de los personajes
+                        else:
+                            print("Personajes: N/A")
+                    else:
+                        print(f"Error al obtener detalles para {species_data[choice]['name']}")
+                else:
+                    print("Selección inválida. Inténtalo de nuevo.")
+            except ValueError:
+                print("Entrada no válida. Por favor, introduce un número o 'q' para salir.")
+
+
