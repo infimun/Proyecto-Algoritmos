@@ -276,4 +276,102 @@ def buscar_personaje():
                         homeworld_name = "N/A"
 
                         #detalles personaje
+                    
+                    print(f"\nDetalles para {character_details.get('name', 'N/A')}:")
+                    print(f"Altura: {character_details.get('height', 'N/A')} cm")
+                    print(f"Peso: {character_details.get('mass', 'N/A')} kg")
+                    print(f"Color de cabello: {character_details.get('hair_color', 'N/A')}")
+                    print(f"Color de piel: {character_details.get('skin_color', 'N/A')}")
+                    print(f"Color de ojos: {character_details.get('eye_color', 'N/A')}")
+                    print(f"Año de nacimiento: {character_details.get('birth_year', 'N/A')}")
+                    print(f"Género: {character_details.get('gender', 'N/A')}")
+                    print(f"Mundo natal: {homeworld_name}")
+
+                    secondary_api_response = requests.get("https://swapi.py4e.com/api/people/")
+                    if secondary_api_response.status_code == 200:
+                        secondary_characters_data = secondary_api_response.json()["results"]
+                        for sec_character in secondary_characters_data:
+                            if sec_character["name"].lower() == character_details["name"].lower():
+                                starships = sec_character.get("starships", [])
+                                vehicles = sec_character.get('vehicles', [])
+                                films = sec_character.get('films', [])
+
+                                if starships or vehicles or films:
+                                    if starships:
+                                        print("\nNaves:")
+                                        for starship_url in starships:
+                                            starship_response = requests.get(starship_url)
+                                            if starship_response.status_code == 200:
+                                                starship_name = starship_response.json()["name"]
+                                                print(f" - {starship_name}")
+                                            else:
+                                                print(" - Error al obtener detalles de la nave.")
+                                    if vehicles:
+                                        print("\nVehículos:")
+                                        for vehicle_url in vehicles:
+                                            vehicle_response = requests.get(vehicle_url)
+                                            if vehicle_response.status_code == 200:
+                                                vehicle_name = vehicle_response.json()["name"]
+                                                print(f" - {vehicle_name}")
+                                            else:
+                                                print(" - Error al obtener detalles del vehículo.")
+
+                                    if films:
+                                        print("\nEpisodios:")
+                                        for film_url in films:
+                                            film_response = requests.get(film_url)
+                                            if film_response.status_code == 200:
+                                                film_title = film_response.json()["title"]
+                                                print(f" - {film_title}")
+                                            else:
+                                                print(" - Error al obtener detalles del episodio.")
+                                    print() 
+                                else:
+                                    print("No se encontraron naves, vehículos o episodios asociados con este personaje.")
+                                break
+                    else:
+                        print("Error al obtener información adicional desde la API secundaria.")
+
+                else:
+                    print(f"Error al obtener detalles para {matching_characters[0]['name']}")
+            else:
+                print("\nPersonajes encontrados:")
+                for index, character in enumerate(matching_characters, start=1):
+                    print(f"{index}. {character['name']}")
+
+                choice = input("\nSelecciona un personaje por número para ver detalles (o 'q' para volver al menú principal): ")
+
+                if choice.lower() == "q":
+                    break
+
+                try:
+                    choice = int(choice) - 1
+                    if 0 <= choice < len(matching_characters):
+                        character_url = matching_characters[choice]["url"]
+                        response = requests.get(character_url)
+                        if response.status_code == 200:
+                            character_details = response.json()["result"]["properties"]["name"]
+                        else:
+                            homeworld_name = "Desconocido"
+                    else:
+                        homeworld_name = "N/A"
+                    
+                    # Mostrar detalles del personaje
+                        print(f"\nDetalles para {character_details.get('name', 'N/A')}:")
+                        print(f"Altura: {character_details.get('height', 'N/A')} cm")
+                        print(f"Peso: {character_details.get('mass', 'N/A')} kg")
+                        print(f"Color de cabello: {character_details.get('hair_color', 'N/A')}")
+                        print(f"Color de piel: {character_details.get('skin_color', 'N/A')}")
+                        print(f"Color de ojos: {character_details.get('eye_color', 'N/A')}")
+                        print(f"Año de nacimiento: {character_details.get('birth_year', 'N/A')}")
+                        print(f"Género: {character_details.get('gender', 'N/A')}")
+                        print(f"Mundo natal: {homeworld_name}")
+                
+                except KeyError:
+                    pass
+
+
                         
+                            
+                                
+
