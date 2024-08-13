@@ -52,3 +52,5 @@ def Estadisticas_sobre_Naves():
     print(f'Costo Minimo en Creditos                 : {costo_minimo_promedio}')
     print(f'La Moda del Costo Minimo en Creditos     : {moda_costo}')
     print(' ')
+
+hola
