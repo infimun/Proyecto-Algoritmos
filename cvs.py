@@ -1,6 +1,21 @@
 import pandas as pd
 import csv
 import os 
+import matplotlib.pylab as plt 
+
+"""
+Gráfico de cantidad de personajes nacidos en cada planeta
+"""
+def grafico_residentes_planets():
+
+    #Ruta del archivo CSV
+    file_path = os.path.dirname(os.path.abspath(__file__))+"/csv/planets.csv"
+
+
+
+
+
+
 
 """
 Estadisticas sobre naves, promedios y moda
@@ -53,4 +68,4 @@ def Estadisticas_sobre_Naves():
     print(f'La Moda del Costo Minimo en Creditos     : {moda_costo}')
     print(' ')
 
-hola
+holaaaaaaaaaaaaaaaaaaaaaaaaaa
