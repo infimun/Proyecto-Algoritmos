@@ -68,8 +68,4 @@ def Estadisticas_sobre_Naves():
     print(f'La Moda del Costo Minimo en Creditos     : {moda_costo}')
     print(' ')
 
-<<<<<<< HEAD
-holaaaaaaaaaaaaaaaaaaaaaaaaaa
-=======
 
->>>>>>> 09f9f2efb5e18f51db9b260359f4b1505c9f564a
