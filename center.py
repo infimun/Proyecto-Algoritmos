@@ -230,32 +230,34 @@ def buscar_personaje():
     all_characters = []
     page = 1
 
-    #personajes mediante api
+    # Obtener todos los personajes a través de las páginas
     while True:
         characters_response = requests.get(f"https://www.swapi.tech/api/people?page={page}&limit=10")
         if characters_response.status_code == 200:
             response_data = characters_response.json()
             characters_data = response_data["results"]
             all_characters.extend(characters_data)
+            
+            # Verificar si hay más páginas
             if response_data["next"] is None:
                 break
             page += 1
         else:
             print("Error al obtener personajes.")
             return
-    
+
     while True:
         search_term = input("\nIntroduce el nombre del personaje (o parte del nombre) a buscar (o 'q' para volver al menú principal): ").strip()
-        if search_term.lower() == "q":
+        if search_term.lower() == 'q':
             break
-        
-        matching_characters= []
-        #busqueda de coincidencia
 
+        matching_characters = []
+
+        # Buscar personajes que coincidan con el término de búsqueda
         for character in all_characters:
             if search_term.lower() in character["name"].lower():
                 matching_characters.append(character)
-        
+
         if matching_characters:
             if len(matching_characters) == 1:
                 # Si solo hay una coincidencia, mostrar la información directamente
@@ -275,8 +277,7 @@ def buscar_personaje():
                     else:
                         homeworld_name = "N/A"
 
-                        #detalles personaje
-                    
+                    # Mostrar detalles del personaje
                     print(f"\nDetalles para {character_details.get('name', 'N/A')}:")
                     print(f"Altura: {character_details.get('height', 'N/A')} cm")
                     print(f"Peso: {character_details.get('mass', 'N/A')} kg")
@@ -287,15 +288,16 @@ def buscar_personaje():
                     print(f"Género: {character_details.get('gender', 'N/A')}")
                     print(f"Mundo natal: {homeworld_name}")
 
+                    # Obtener y mostrar detalles de las naves, vehículos y episodios desde la API secundaria
                     secondary_api_response = requests.get("https://swapi.py4e.com/api/people/")
                     if secondary_api_response.status_code == 200:
                         secondary_characters_data = secondary_api_response.json()["results"]
                         for sec_character in secondary_characters_data:
                             if sec_character["name"].lower() == character_details["name"].lower():
-                                starships = sec_character.get("starships", [])
+                                starships = sec_character.get('starships', [])
                                 vehicles = sec_character.get('vehicles', [])
                                 films = sec_character.get('films', [])
-
+                                
                                 if starships or vehicles or films:
                                     if starships:
                                         print("\nNaves:")
@@ -325,7 +327,7 @@ def buscar_personaje():
                                                 print(f" - {film_title}")
                                             else:
                                                 print(" - Error al obtener detalles del episodio.")
-                                    print() 
+                                    print()  # Agregar una línea en blanco después de las naves, vehículos y episodios
                                 else:
                                     print("No se encontraron naves, vehículos o episodios asociados con este personaje.")
                                 break
@@ -341,7 +343,7 @@ def buscar_personaje():
 
                 choice = input("\nSelecciona un personaje por número para ver detalles (o 'q' para volver al menú principal): ")
 
-                if choice.lower() == "q":
+                if choice.lower() == 'q':
                     break
 
                 try:
@@ -350,28 +352,84 @@ def buscar_personaje():
                         character_url = matching_characters[choice]["url"]
                         response = requests.get(character_url)
                         if response.status_code == 200:
-                            character_details = response.json()["result"]["properties"]["name"]
+                            character_details = response.json()["result"]["properties"]
+
+                            # Obtener el nombre del planeta natal
+                            homeworld_url = character_details.get('homeworld')
+                            if homeworld_url:
+                                planet_response = requests.get(homeworld_url)
+                                if planet_response.status_code == 200:
+                                    homeworld_name = planet_response.json()["result"]["properties"]["name"]
+                                else:
+                                    homeworld_name = "Desconocido"
+                            else:
+                                homeworld_name = "N/A"
+
+                            # Mostrar detalles del personaje
+                            print(f"\nDetalles para {character_details.get('name', 'N/A')}:")
+                            print(f"Altura: {character_details.get('height', 'N/A')} cm")
+                            print(f"Peso: {character_details.get('mass', 'N/A')} kg")
+                            print(f"Color de cabello: {character_details.get('hair_color', 'N/A')}")
+                            print(f"Color de piel: {character_details.get('skin_color', 'N/A')}")
+                            print(f"Color de ojos: {character_details.get('eye_color', 'N/A')}")
+                            print(f"Año de nacimiento: {character_details.get('birth_year', 'N/A')}")
+                            print(f"Género: {character_details.get('gender', 'N/A')}")
+                            print(f"Mundo natal: {homeworld_name}")
+
+                            # Obtener y mostrar detalles de las naves, vehículos y episodios desde la API secundaria
+                            secondary_api_response = requests.get("https://swapi.py4e.com/api/people/")
+                            if secondary_api_response.status_code == 200:
+                                secondary_characters_data = secondary_api_response.json()["results"]
+                                for sec_character in secondary_characters_data:
+                                    if sec_character["name"].lower() == character_details["name"].lower():
+                                        starships = sec_character.get('starships', [])
+                                        vehicles = sec_character.get('vehicles', [])
+                                        films = sec_character.get('films', [])
+                                        
+                                        if starships or vehicles or films:
+                                            if starships:
+                                                print("\nNaves:")
+                                                for starship_url in starships:
+                                                    starship_response = requests.get(starship_url)
+                                                    if starship_response.status_code == 200:
+                                                        starship_name = starship_response.json()["name"]
+                                                        print(f" - {starship_name}")
+                                                    else:
+                                                        print(" - Error al obtener detalles de la nave.")
+                                            if vehicles:
+                                                print("\nVehículos:")
+                                                for vehicle_url in vehicles:
+                                                    vehicle_response = requests.get(vehicle_url)
+                                                    if vehicle_response.status_code == 200:
+                                                        vehicle_name = vehicle_response.json()["name"]
+                                                        print(f" - {vehicle_name}")
+                                                    else:
+                                                        print(" - Error al obtener detalles del vehículo.")
+
+                                            if films:
+                                                print("\nEpisodios:")
+                                                for film_url in films:
+                                                    film_response = requests.get(film_url)
+                                                    if film_response.status_code == 200:
+                                                        film_title = film_response.json()["title"]
+                                                        print(f" - {film_title}")
+                                                    else:
+                                                        print(" - Error al obtener detalles del episodio.")
+                                            print()  # Agregar una línea en blanco después de las naves, vehículos y episodios
+                                        else:
+                                            print("No se encontraron naves, vehículos o episodios asociados con este personaje.")
+                                        break
+                            else:
+                                print("Error al obtener información adicional desde la API secundaria.")
+
                         else:
-                            homeworld_name = "Desconocido"
+                            print(f"Error al obtener detalles para {matching_characters[choice]['name']}")
                     else:
-                        homeworld_name = "N/A"
-                    
-                    # Mostrar detalles del personaje
-                        print(f"\nDetalles para {character_details.get('name', 'N/A')}:")
-                        print(f"Altura: {character_details.get('height', 'N/A')} cm")
-                        print(f"Peso: {character_details.get('mass', 'N/A')} kg")
-                        print(f"Color de cabello: {character_details.get('hair_color', 'N/A')}")
-                        print(f"Color de piel: {character_details.get('skin_color', 'N/A')}")
-                        print(f"Color de ojos: {character_details.get('eye_color', 'N/A')}")
-                        print(f"Año de nacimiento: {character_details.get('birth_year', 'N/A')}")
-                        print(f"Género: {character_details.get('gender', 'N/A')}")
-                        print(f"Mundo natal: {homeworld_name}")
-                
-                except KeyError:
-                    pass
+                        print("Selección inválida. Inténtalo de nuevo.")
+                except ValueError:
+                    print("Entrada no válida. Por favor, introduce un número o 'q' para salir.")
+        else:
+            print("No se encontraron personajes que coincidan con tu búsqueda.")
 
-
-                        
-                            
                                 
 
