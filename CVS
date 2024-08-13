@@ -50,7 +50,7 @@ def grafico_caracteristicas_naves():
     #Asegurarse de que las columnas necesarias existen
     required_columns = ["length", "cargo_capacity", "hyperdrive_rating", "MGLT"]
     if all(column in df.columns for column in required_columns):
-        df_filtered = df[(df["len"] > 0) & (df["cargo_capacity"] > 0) & (df["hyperdrive_rating"] > 0) & (df["MGLT"] > 0)].dropna(subset=required_columns)
+        df_filtered = df[(df["length"] > 0) & (df["cargo_capacity"] > 0) & (df["hyperdrive_rating"] > 0) & (df["MGLT"] > 0)].dropna(subset=required_columns)
 
         #Grafico de Longitud de la Nave
         plt.figure(figsize=(12,6))
