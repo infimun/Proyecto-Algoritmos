@@ -1,0 +1,146 @@
+import pandas as pd
+import csv
+import os 
+import matplotlib.pylab as plt 
+
+"""
+Gráfico de cantidad de personajes nacidos en cada planeta
+"""
+def grafico_residentes_planets():
+    
+    #Ruta del archivo CSV
+    file_path = os.path.dirname(os.path.abspath(__file__))+"/csv/planets.csv"
+
+    #Leer el Archivo CSV
+    df = pd.read_csv(file_path)
+
+    #Contar la Cantidad de personajes nacidos en cada Planeta
+    if "name" in df.columns and "residents" in df.columns:
+        df["residents_cantidad"] = df["residents"].apply(lambda x: len(x.split(",")) if pd.notnull(x) else 0)
+        planet_counts = df.groupby("name")["residents_cantidad"].sum()
+
+        #Crear el Grafico
+        plt.figure(figsize=(12,6))
+        planet_counts.plot(king="bar", color="blue")
+        plt.title('Cantidad de Personajes Nacidos en cada Planeta')
+        plt.xlabel('Planets')
+        plt.ylabel('Residents')
+        plt.xticks(rotation = 0)
+        plt.tight_layout()
+
+        #Mostrar el Grafico
+        plt.show()
+    else:
+        print("El Archivo CSV no contien todas las columnas necesarias")
+
+
+
+
+"""
+Graficos de Caracteristicas de Naves
+"""
+def grafico_caracteristicas_naves():
+
+    #Ruta del Archivo CSV
+    file_path = os.path.dirname(os.path.abspath(__file__))+"/csv/starships.csv"
+
+    #Leer el Archivo CSV
+    df = pd.read_csv(file_path)
+
+    #Asegurarse de que las columnas necesarias existen
+    required_columns = ["length", "cargo_capacity", "hyperdrive_rating", "MGLT"]
+    if all(column in df.columns for column in required_columns):
+        df_filtered = df[(df["len"] > 0) & (df["cargo_capacity"] > 0) & (df["hyperdrive_rating"] > 0) & (df["MGLT"] > 0)].dropna(subset=required_columns)
+
+        #Grafico de Longitud de la Nave
+        plt.figure(figsize=(12,6))
+        plt.bar(df_filtered["name"], df_filtered["length"], color= "blue")
+        plt.title('Longitud de la Nave')
+        plt.xlabel('Nombre de la Nave')
+        plt.ylabel('longitud')
+        plt.xticks(rotation=270, ha='right')
+        plt.tight_layout()
+
+        #Grafico de Capacidad de carga
+        plt.figure(figsize=(12,6))
+        plt.bar(df_filtered['name'], df_filtered['cargo_capacity'], color='green')
+        plt.title('Capacidad de Carga')
+        plt.xlabel('Nombre de la Nave')
+        plt.ylabel('Capacidad de Carga')
+        plt.xticks(rotation=270, ha='right')
+        plt.tight_layout()
+
+        #Grafico de Clasificacion de Hiperimpulsor
+        plt.figure(figsize=(12,6))
+        plt.bar(df_filtered['name'], df_filtered['hyperdrive_rating'], color='red')
+        plt.title('Clasificacion de Hiperimpulsor')
+        plt.xlabel('Nombre de la Nave')
+        plt.ylabel('Clasificacion de Hiperimpulsor')
+        plt.xticks(rotation=270, ha='right')
+        plt.tight_layout()
+
+        #Grafico de MGLT
+        plt.figure(figsize=(12,6))
+        plt.bar(df_filtered['name'], df_filtered['MGLT'], color='orange')
+        plt.title('MGLT (Modern Galactic Light Time)')
+        plt.xlabel('Nombre de la Nave')
+        plt.ylabel('MGLT')
+        plt.xticks(rotation=270, ha='right')
+        plt.tight_layout()
+        plt.show()
+    else:
+        print('El Archivo CSV no contiene todas las columnas necesarias:', required_columns)
+
+
+
+
+"""
+Estadisticas sobre naves, promedios y moda
+"""
+def Estadisticas_sobre_Naves():
+
+
+    #Leer archivo CSV
+    ruta_archivo = os.path.dirname(os.path.abspath(__file__))+"/csv/starships.csv"
+    df = pd.read_csv(ruta_archivo)
+
+    #Capturar estadisticas
+    Hiperimpulsor_promedio = df["hyperdrive_rating"].mean()
+    mglt_promedio = df["MGLT"].max()
+    velocidad_maxima_atmosfera_promedio = df["max_atmosphering_speed"].max()
+    costo_minimo_promedio = df["cost_in_credits"].min()
+    moda_hyperdrive = df["hyperdrive_rating"].mode().iloc[0]
+    moda_mglt = df["MGLT"].mode().iloc[0]
+    moda_velocidadmax = df["max_atmosphering_speed"].mode().iloc[0]
+    moda_costo = df["cost_in_credits"].mode().iloc[0]
+
+    with open(ruta_archivo, mode='r', encoding='utf-8') as file:
+        csv_reader = csv.DictReade(file)
+        
+        #Limpiar pantalla e imprimir los encabezados
+        os.system('cls')
+        print(f'{'Clase de Nave':<30} {'Hiperimpulsor':<15} {'MGLT':<10} {'Velocidad maxima':<20} {'Costo en Creditos':<15}')
+        print('-' * 95)
+
+        #Leer cada fila del archivo CSV
+        for row in csv_reader:
+            clase_nave = row['name']
+            hiperimpulsor = ['hyperdrive_rating']
+            mglt = row['MGLT']
+            velocidad_maxima = row['max_atmosphering_speed']
+            costo = row['costo_in_credits']
+
+            #Imprimir los datos por clase de nave
+            print(f'{clase_nave:<30} {hiperimpulsor:<15} {mglt:<10} {velocidad_maxima:<20} {costo:<15}')
+
+    #Imprimir el promedio y la moda de los datos
+    print(' ')
+    print(f'Promedio de Clasiicacion del Hierimpulsor: {Hiperimpulsor_promedio:.2f}')
+    print(f'La Moda del Hiperimpulsor                 : {moda_hyperdrive}')
+    print(' ')
+    print(f'Maximo MGLT                              : {mglt_promedio}')
+    print(f'La Moda de MGLT                          : {moda_mglt}')
+    print(' ')
+    print(f'Costo Minimo en Creditos                 : {costo_minimo_promedio}')
+    print(f'La Moda del Costo Minimo en Creditos     : {moda_costo}')
+    print(' ')
