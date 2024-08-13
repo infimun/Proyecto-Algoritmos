@@ -5,6 +5,27 @@ from models.species import Species
 from models.planet import Planet
 import os
 
+def gestionar_misiones():
+    while True:
+        print("\nOpciones de Misiones:")
+        print("1. Construir misión")
+        print("2. Visualizar misiones")
+        print("3. Cargar misiones")
+        print("4. Volver al menú principal")
+        choice = input("\nIntroduce tu elección: ")
+
+        if choice == '1':
+            construir_mision()
+        elif choice == '2':
+            visualizar_misiones()
+        elif choice == '3':
+            cargar_misiones()
+        elif choice == '4':
+            break
+        else:
+            print("Elección inválida. Por favor, inténtalo de nuevo.")
+
+
 def construir_mision():
     misiones = cargar_misiones_existentes()
 

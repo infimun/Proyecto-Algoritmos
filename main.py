@@ -6,6 +6,7 @@ from cvs import Estadisticas_sobre_Naves
 from cvs import grafico_residentes_planets
 from misiones import gestionar_misiones
 
+
 def main():
     while True:
         print("""
