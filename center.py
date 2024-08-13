@@ -202,11 +202,11 @@ def listar_planetas():
                             film_titles.append("Error al obtener el titulo del episodio")
 
                     #Mostrar los detalles del planeta y los episodios en los que aparece
-                    print(f"\n Detalles para{planet_name}: ")
-                    print(f"Periodo de orbita: {planet.get('orbital_period', 'N/A')} Dias")
-                    print(f"Periodo de rotacion: {planet.get('rotation_period', 'N/A')} Horas")
-                    print(f"Cantidad de habitantes: {planet.get('population'), ' N/A'}")
-                    print(f"Tipo declima: {planet.get('climate', 'N/A')}")
+                    print(f"\nDetalles para {planet_name}:")
+                    print(f"Período de órbita: {planet.get('orbital_period', 'N/A')} días")
+                    print(f"Período de rotación: {planet.get('rotation_period', 'N/A')} horas")
+                    print(f"Cantidad de habitantes: {planet.get('population', 'N/A')}")
+                    print(f"Tipo de clima: {planet.get('climate', 'N/A')}")
 
                     print("\n Episodios en los que aparece:")
                     if film_titles:
